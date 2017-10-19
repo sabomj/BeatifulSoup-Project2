@@ -10,6 +10,7 @@
 ###########
 
 ## Import statements
+import urllib.request, urllib.parse, urllib.error
 import unittest
 import requests
 import re
@@ -27,11 +28,8 @@ from bs4 import BeautifulSoup
 ## find_urls("the internet is awesome #worldwideweb") should return [], empty list
 
 def find_urls(s):
-    return re.findall('(http[s]?:\/\/[\S]+\.\S+)', s)
-    # url = s
-    # urllst = re.findall('^h.+m', url)
-    # print (urllst)
-    # return urllst
+    return re.findall('(http[s]?:\/\/[\S]+\.\S+)', s) #finds beginning with http or https, any following characters, up until the last "." with following characters and whitespace
+
 
 ## PART 2  - Define a function grab_headlines.
 ## INPUT: N/A. No input.
@@ -39,8 +37,16 @@ def find_urls(s):
 ## http://www.michigandaily.com/section/opinion
 
 def grab_headlines():
-    pass
-    #Your code here
+
+    get = open('opinion.html')
+    soup = BeautifulSoup(get, 'html.parser')
+    title_list = [] #initialized empty list
+
+    mostreadclass = soup.find(class_="pane-mostread") #finds class containing pane-mostread and headlines
+    tags= mostreadclass.find_all('a') #finds headlines after tag 'a'
+    for x in tags: #for loop to run through headlines
+        title_list.append(x.string) #add each headline to title list
+    return (title_list) #return list with headlines
 
 
 
